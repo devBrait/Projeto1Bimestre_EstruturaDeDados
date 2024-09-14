@@ -1,35 +1,84 @@
-import java.util.Arrays;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VerificaEntrada {
-    //private static final String[] comandos = {"EXIT", "VARS", "RESET", "REC", "STOP", "PLAY", "ERASE"};
+
     GerenciaVariavel gerenciaVariavel = new GerenciaVariavel();
+    ConversorExpressao conversorExpressao = new ConversorExpressao();
+    VerificaExpressao verificaExpressao = new VerificaExpressao(1024);
+    private DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
     // verifica se o input corresponde a algum dos comandos válidos
-    public void is_valid(String input) {
-
-        if (input.matches("[A-Z]\\s*=\\s*\\d+(\\.\\d+)?"))
+    public void isValid(String expressao) {
+        if(expressao.matches(".*[+\\-*/^].*"))
         {
-            String[] partes = input.split("=");
+
+            int quantidadeVar = gerenciaVariavel.quantidadeVariaveis();
+            List<Character> variaveisNaoDefinidas = new ArrayList<>();
+
+            // Itera sobre os caracteres da expressão
+            for (char exp : expressao.toCharArray()) {
+                if (Character.isLetter(exp)) { // verifica se o caracter é uma letra
+                    if (gerenciaVariavel.obterValor(exp) == -1)
+                    {
+                        if (!variaveisNaoDefinidas.contains(exp))
+                        {
+                            variaveisNaoDefinidas.add(exp);
+                        }
+                    }
+                }
+            }
+            // Caso as variaveis ainda não tenham sido iniciadas
+            if (!variaveisNaoDefinidas.isEmpty()) {
+                for (char var : variaveisNaoDefinidas)
+                {
+                    System.out.println("Erro: variável " + var + " não definida.");
+                }
+            }else if(quantidadeVar == 0)
+            {
+                System.out.println("Erro: operação inválida");
+            }else
+            {
+                try
+                {
+                    String expressaoPosFixa = conversorExpressao.convertorPosFixa(expressao);
+                    System.out.println(expressaoPosFixa);
+
+                    var resultado_final = verificaExpressao.avaliar(expressaoPosFixa, gerenciaVariavel);
+                    System.out.println(decimalFormat.format(resultado_final));
+
+                }catch (RuntimeException ex)
+                {
+                    System.out.println(ex.getMessage());
+                }
+            }
+
+        }
+        else if (expressao.matches("[A-Z]\\s*=\\s*\\d+(\\.\\d+)?"))
+        {
+            String[] partes = expressao.split("=");
             String varStr = partes[0].trim();
             char var = varStr.charAt(0);
-            int valor = Integer.parseInt(partes[1].trim());
+            double valor = Double.parseDouble(partes[1].trim());
 
             gerenciaVariavel.definirValor(var, valor);
-            System.out.println(var + " = " + valor);
+            System.out.println(var + " = " + decimalFormat.format(valor));
 
-        }else if(input.matches("[A-Z]"))
+        }else if(expressao.matches("[A-Z]"))
         {
+            char var = expressao.charAt(0);
+            double valor = gerenciaVariavel.obterValor(var);
 
-            char var = input.charAt(0);
-            int valor = gerenciaVariavel.obterValor(var);
-            System.out.println(var + " = " + valor);
+            if(valor == -1){
+                System.out.println("Erro: variável " + var + " não definida.");
+            }else{
+                System.out.println("X = " + decimalFormat.format(valor));
+            }
 
         }else
         {
-//            if (Arrays.asList(comandos).contains(input))
-//            {
-                verifica_comandos(input);
-//            }
+            verifica_comandos(expressao);
         }
     }
 

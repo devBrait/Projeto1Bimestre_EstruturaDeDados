@@ -1,19 +1,19 @@
+import java.text.DecimalFormat;
+
 public class GerenciaVariavel {
 
-    private int[] valores = new int[26];
+    private double[] valores = new double[26];
     private boolean[] definidas = new boolean[26];
+    private DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
-    public void definirValor(char var, int valor) {
-        if (var < 'A' || var > 'Z') {
-            throw new IllegalArgumentException("Erro: Variável inválida.");
-        }
+    public void definirValor(char var, double valor) {
         valores[var - 'A'] = valor;
         definidas[var - 'A'] = true;
     }
 
-    public int obterValor(char var) {
-        if (!definidas[var - 'A']) {
-            System.out.println("Erro: variável " + var + " não definida.");
+    public double obterValor(char var) {
+        if(!definidas[var - 'A']) {
+            return -1;
         }
         return valores[var - 'A'];
     }
@@ -23,7 +23,7 @@ public class GerenciaVariavel {
 
         for (int i = 0; i < 26; i++) {
             if (definidas[i]) {
-                System.out.println((char) (i + 'A') + " = " + valores[i]);
+                System.out.println((char) (i + 'A') + " = " + decimalFormat.format(valores[i]));
                 variaveisDefinidas = true;
             }
         }
@@ -36,7 +36,21 @@ public class GerenciaVariavel {
     public void reset() {
         for (int i = 0; i < 26; i++) {
             definidas[i] = false;
+            valores[i] = 0;
         }
         System.out.println("Variáveis reiniciadas.");
     }
+
+    public int quantidadeVariaveis() {
+        int cont=0;
+
+        for (int i = 0; i < 26; i++) {
+            if (definidas[i]) {
+                cont++;
+            }
+        }
+
+        return cont;
+    }
+
 }

@@ -7,28 +7,32 @@ public class Pilha {
             topo = -1;
         }
 
-        public void empilhar(char elemento) {
+        public Pilha(){
+            this(1024);
+        }
+
+        public void push(char elemento) {
             if (topo == elementos.length - 1) {
                 throw new RuntimeException("Pilha cheia");
             }
-            elementos[topo++] = elemento;
+            elementos[++topo] = elemento;
         }
 
-        public char desempilhar() {
+        public char pop() {
             if (topo == -1) {
                 throw new RuntimeException("Pilha vazia");
             }
             return elementos[topo--];
         }
 
-        public char topo() {
+        public char top() {
             if (topo == -1) {
                 throw new RuntimeException("Pilha vazia");
             }
             return elementos[topo];
         }
 
-        public boolean vazia() {
+        public boolean isEmpty() {
             return topo == -1;
         }
 }

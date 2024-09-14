@@ -1,4 +1,54 @@
 public class VerificaExpressao {
+    private double[] pilhaNumeros;
+    private int topo;
 
-    // Vai verificar expressoes matematicas
+    public VerificaExpressao(int tamanhoMaximo) {
+        pilhaNumeros = new double[tamanhoMaximo];
+        topo = -1;
+    }
+
+    private void push(double numero) {
+        pilhaNumeros[++topo] = numero;
+    }
+
+    private double pop() {
+        return pilhaNumeros[topo--];
+    }
+
+    public double avaliar(String expressaoPosfixa, GerenciaVariavel variavel) {
+        String[] tokens = expressaoPosfixa.split("\\s+");
+        for (String token : tokens) {
+            if (Character.isLetter(token.charAt(0))) {
+                push(variavel.obterValor(token.charAt(0)));
+            } else if (token.length() == 1 && "+-*/^".indexOf(token.charAt(0)) != -1) { // Verifica se é um operador
+                double b = pop();
+                double a = pop();
+                switch (token.charAt(0)) {
+                    case '+':
+                        push(a + b);
+                        break;
+                    case '-':
+                        push(a - b);
+                        break;
+                    case '*':
+                        push(a * b);
+                        break;
+                    case '/':
+                        if (b == 0)
+                        {
+                            throw new ArithmeticException("Impossível realizar divisão por zero.");
+                        }
+                        push(a / b);
+                        break;
+                    case '^':
+                        push(Math.pow(a, b));
+                        break;
+                }
+            } else {
+                // Tenta empilhar como número, caso não seja letra ou operador
+                push(Double.parseDouble(token));
+            }
+        }
+        return pop();
+    }
 }
