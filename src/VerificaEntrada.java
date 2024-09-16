@@ -1,6 +1,10 @@
+/*
+Nome: Eduardo Henrique de Souza Cruz RA: 10358690
+Nome: Guilherme Teodoro de Oliveira RA: 10425362
+Nome: Vinícius Brait Lorimier RA: 10420046
+ */
+
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 public class VerificaEntrada {
 
@@ -49,7 +53,7 @@ public class VerificaEntrada {
                 System.out.println(ex.getMessage());
             }
 
-        } else if (expressao.equals("ERASE"))
+        } else if (expressao.equals("ERASE") && !gravacao)
         {
             fila.apagar();
         } else if (gravacao)
@@ -69,30 +73,42 @@ public class VerificaEntrada {
         }
     }
 
-    private void processarExpressaoMatematica(String expressao)
-    {
+    private void processarExpressaoMatematica(String expressao) {
         int quantidadeVar = gerenciaVariavel.quantidadeVariaveis();
-        List<Character> variaveisNaoDefinidas = new ArrayList<>();
+        char[] variaveisNaoDefinidas = new char[100];
+        int countVariaveisNaoDefinidas = 0;
 
-        for (char exp : expressao.toCharArray())
-        {
-            if (Character.isLetter(exp))
-            {
+        // Itera sobre a expressão
+        for (char exp : expressao.toCharArray()) {
+            if (Character.isLetter(exp)) {
                 if (gerenciaVariavel.obterValor(exp) == -1)
                 {
-                    if (!variaveisNaoDefinidas.contains(exp))
+                    // Verifica se a variável já foi adicionada
+                    boolean jaAdicionada = false;
+                    for (int i = 0; i < countVariaveisNaoDefinidas; i++)
                     {
-                        variaveisNaoDefinidas.add(exp);
+                        if (variaveisNaoDefinidas[i] == exp)
+                        {
+                            jaAdicionada = true;
+                            break;
+                        }
+                    }
+
+                    // Adiciona a variável se não estiver presente
+                    if (!jaAdicionada)
+                    {
+                        variaveisNaoDefinidas[countVariaveisNaoDefinidas++] = exp;
                     }
                 }
             }
         }
 
-        if (!variaveisNaoDefinidas.isEmpty())
+        // Verifica se há variáveis não definidas
+        if (countVariaveisNaoDefinidas > 0)
         {
-            for (char var : variaveisNaoDefinidas)
+            for (int i = 0; i < countVariaveisNaoDefinidas; i++)
             {
-                System.out.println("Erro: variável " + var + " não definida.");
+                System.out.println("Erro: variável " + variaveisNaoDefinidas[i] + " não definida.");
             }
         } else if (quantidadeVar == 0)
         {
@@ -102,7 +118,6 @@ public class VerificaEntrada {
             try
             {
                 String expressaoPosFixa = conversorExpressao.convertorPosFixa(expressao);
-
                 var resultado_final = verificaExpressao.avaliar(expressaoPosFixa, gerenciaVariavel);
                 System.out.println(decimalFormat.format(resultado_final));
 

@@ -1,3 +1,9 @@
+/*
+Nome: Eduardo Henrique de Souza Cruz RA: 10358690
+Nome: Guilherme Teodoro de Oliveira RA: 10425362
+Nome: Vinícius Brait Lorimier RA: 10420046
+ */
+
 public class Pilha {
         private char[] elementos;
         private int topo;
@@ -12,21 +18,24 @@ public class Pilha {
         }
 
         public void push(char elemento) {
-            if (topo == elementos.length - 1) {
+            if (topo == elementos.length - 1)
+            {
                 throw new RuntimeException("Pilha cheia");
             }
             elementos[++topo] = elemento;
         }
 
         public char pop() {
-            if (topo == -1) {
+            if (topo == -1)
+            {
                 throw new RuntimeException("Pilha vazia");
             }
             return elementos[topo--];
         }
 
         public char top() {
-            if (topo == -1) {
+            if (topo == -1)
+            {
                 throw new RuntimeException("Pilha vazia");
             }
             return elementos[topo];
