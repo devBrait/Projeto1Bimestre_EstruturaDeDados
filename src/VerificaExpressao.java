@@ -8,10 +8,18 @@ public class VerificaExpressao {
     }
 
     private void push(double numero) {
+        if (topo == pilhaNumeros.length - 1) {
+            throw new RuntimeException("Pilha cheia");
+        }
+
         pilhaNumeros[++topo] = numero;
     }
 
     private double pop() {
+        if (topo == -1) {
+            throw new RuntimeException("Pilha vazia");
+        }
+
         return pilhaNumeros[topo--];
     }
 
@@ -20,7 +28,12 @@ public class VerificaExpressao {
         for (String token : tokens) {
             if (Character.isLetter(token.charAt(0))) {
                 push(variavel.obterValor(token.charAt(0)));
-            } else if (token.length() == 1 && "+-*/^".indexOf(token.charAt(0)) != -1) { // Verifica se é um operador
+            } else if (token.length() == 1 && "+-*/^".indexOf(token.charAt(0)) != -1) // Verifica se é um operador
+            {
+                if (topo < 1) {
+                    throw new RuntimeException("Impossível realizar essa operação");
+                }
+
                 double b = pop();
                 double a = pop();
                 switch (token.charAt(0)) {
