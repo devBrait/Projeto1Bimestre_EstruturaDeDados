@@ -18,7 +18,8 @@ public class GerenciaVariavel {
     }
 
     public double obterValor(char var) {
-        if(!definidas[var - 'A']) {
+        if(!definidas[var - 'A'])
+        {
             return -1;
         }
         return valores[var - 'A'];
@@ -27,20 +28,24 @@ public class GerenciaVariavel {
     public void listarVariaveis() {
         boolean variaveisDefinidas = false;
 
-        for (int i = 0; i < 26; i++) {
-            if (definidas[i]) {
+        for (int i = 0; i < 26; i++)
+        {
+            if (definidas[i])
+            {
                 System.out.println((char) (i + 'A') + " = " + decimalFormat.format(valores[i]));
                 variaveisDefinidas = true;
             }
         }
 
-        if (!variaveisDefinidas) {
+        if (!variaveisDefinidas)
+        {
             System.out.println("Nenhuma variável definida.");
         }
     }
 
     public void reset() {
-        for (int i = 0; i < 26; i++) {
+        for (int i = 0; i < 26; i++)
+        {
             definidas[i] = false;
             valores[i] = 0;
         }
@@ -50,8 +55,10 @@ public class GerenciaVariavel {
     public int quantidadeVariaveis() {
         int cont=0;
 
-        for (int i = 0; i < 26; i++) {
-            if (definidas[i]) {
+        for (int i = 0; i < 26; i++)
+        {
+            if (definidas[i])
+            {
                 cont++;
             }
         }

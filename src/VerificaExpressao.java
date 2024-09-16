@@ -4,6 +4,7 @@ Nome: Guilherme Teodoro de Oliveira RA: 10425362
 Nome: Vinícius Brait Lorimier RA: 10420046
  */
 
+// Realiza o cálculo da expressão final
 public class VerificaExpressao {
     private double[] pilhaNumeros;
     private int topo;
@@ -32,20 +33,33 @@ public class VerificaExpressao {
     }
 
     public double avaliar(String expressaoPosfixa, GerenciaVariavel variavel) {
-        String[] tokens = expressaoPosfixa.split("\\s+");
-        for (String token : tokens) {
-            if (Character.isLetter(token.charAt(0)))
+        for (int i = 0; i < expressaoPosfixa.length(); i++)
+        {
+            char c = expressaoPosfixa.charAt(i);
+
+            // Ignora os espaços
+            if (Character.isWhitespace(c))
             {
-                push(variavel.obterValor(token.charAt(0)));
-            } else if (token.length() == 1 && "+-*/^".indexOf(token.charAt(0)) != -1) // Verifica se é um operador
+                continue;
+            }
+
+            // Se for letra, empilhar valor da variável
+            if (Character.isLetter(c))
             {
-                if (topo < 1) {
+                push(variavel.obterValor(c));
+            }
+            // Se for um operador
+            else if ("+-*/^".indexOf(c) != -1)
+            {
+                if (topo < 1)
+                {
                     throw new RuntimeException("Impossível realizar essa operação.");
                 }
 
                 double b = pop();
                 double a = pop();
-                switch (token.charAt(0)) {
+                switch (c)
+                {
                     case '+':
                         push(a + b);
                         break;
@@ -66,11 +80,9 @@ public class VerificaExpressao {
                         push(Math.pow(a, b));
                         break;
                 }
-            } else {
-                // Tenta empilhar como número, caso não seja letra ou operador
-                push(Double.parseDouble(token));
             }
         }
         return pop();
     }
+
 }

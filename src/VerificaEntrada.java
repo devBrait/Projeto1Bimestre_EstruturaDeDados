@@ -13,7 +13,7 @@ public class VerificaEntrada {
     VerificaExpressao verificaExpressao = new VerificaExpressao(1024);
     Fila fila = new Fila();
 
-    private boolean gravacao = false;
+    private boolean gravando = false;
     private DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
 
@@ -23,17 +23,17 @@ public class VerificaEntrada {
         if (expressao.equals("REC"))
         {
             fila.iniciarGravacao();
-            gravacao = true;
+            gravando = true;
         } else if (expressao.equals("STOP"))
         {
             fila.pararGravacao();
-            gravacao = false;
-        } else if (expressao.equals("PLAY") && !gravacao)
+            gravando = false;
+        } else if (expressao.equals("PLAY") && !gravando)
         {
             try
             {
                 String[] comandos = fila.retornaFila();
-
+                System.out.println("Reproduzindo gravação...");
                 for(int i=0; i<comandos.length;i++)
                 {
                    if(comandos[i] == null)
@@ -41,7 +41,7 @@ public class VerificaEntrada {
                        return;
                    }else
                    {
-                       if(comandos[i].matches(".*[+\\-*/^].*"))
+                       if(comandos[i].matches(".*[+\\-*/^%].*"))
                        {
                           System.out.println(comandos[i]);
                        }
@@ -53,13 +53,13 @@ public class VerificaEntrada {
                 System.out.println(ex.getMessage());
             }
 
-        } else if (expressao.equals("ERASE") && !gravacao)
+        } else if (expressao.equals("ERASE") && !gravando)
         {
             fila.apagar();
-        } else if (gravacao)
+        } else if (gravando)
         {
             fila.gravarComando(expressao);
-        } else if (expressao.matches(".*[+\\-*/^].*"))
+        } else if (expressao.matches(".*[+\\-*/^%].*"))
         {
             processarExpressaoMatematica(expressao);
         } else if (expressao.matches("[A-Z]\\s*=\\s*\\d+(\\.\\d+)?"))
@@ -78,9 +78,31 @@ public class VerificaEntrada {
         char[] variaveisNaoDefinidas = new char[100];
         int countVariaveisNaoDefinidas = 0;
 
+        if (expressao.matches(".*%.*"))
+        {
+           System.out.println("Erro: operador inválido.");
+           return;
+        }
+
+        // Permite números, operadores e variáveis simples de a a z
+        if (!expressao.matches("[0-9+\\-*/()a-zA-Z\\s]*") || expressao.matches(".*[a-zA-Z]{2,}.*"))
+        {
+            System.out.println("Erro: expressão inválida.");
+            return;
+        }
+
+        // Verifica se há variáveis seguidas por números, o que é inválido
+        if (expressao.matches(".*\\d+[\\+\\-*/]\\d+.*"))
+        {
+            System.out.println("Erro: expressão inválida.");
+            return;
+        }
+
         // Itera sobre a expressão
-        for (char exp : expressao.toCharArray()) {
-            if (Character.isLetter(exp)) {
+        for (char exp : expressao.toCharArray())
+        {
+            if (Character.isLetter(exp))
+            {
                 if (gerenciaVariavel.obterValor(exp) == -1)
                 {
                     // Verifica se a variável já foi adicionada
@@ -100,6 +122,10 @@ public class VerificaEntrada {
                         variaveisNaoDefinidas[countVariaveisNaoDefinidas++] = exp;
                     }
                 }
+            }else if(Character.isDigit(exp))
+            {
+                System.out.println("Erro: expressão inválida.");
+                return;
             }
         }
 
@@ -112,7 +138,7 @@ public class VerificaEntrada {
             }
         } else if (quantidadeVar == 0)
         {
-            System.out.println("Erro: operação inválida");
+            System.out.println("Erro: operação inválida.");
         } else
         {
             try
@@ -127,6 +153,7 @@ public class VerificaEntrada {
             }
         }
     }
+
 
     private void definirVariavel(String expressao)
     {
@@ -149,7 +176,7 @@ public class VerificaEntrada {
             System.out.println("Erro: variável " + var + " não definida.");
         } else
         {
-            System.out.println("X = " + decimalFormat.format(valor));
+            System.out.println(decimalFormat.format(valor));
         }
     }
 

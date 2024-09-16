@@ -4,12 +4,14 @@ Nome: Guilherme Teodoro de Oliveira RA: 10425362
 Nome: Vinícius Brait Lorimier RA: 10420046
  */
 
+// Realiza a conversão da expressão para posFixa
 public class ConversorExpressao {
-
     Pilha pilha = new Pilha();
 
-    private int prioridade(char operador) {
-        switch (operador) {
+    private int prioridade(char operador)
+    {
+        switch (operador)
+        {
             case '+':
             case '-':
                 return 1;
@@ -25,19 +27,19 @@ public class ConversorExpressao {
 
     public String convertorPosFixa(String expressao) {
         StringBuilder posfixa = new StringBuilder();
-        StringBuilder numeroOuVariavel = new StringBuilder();
+        StringBuilder strVar = new StringBuilder();
 
         for (char c : expressao.toCharArray())
         {
-            if (Character.isLetterOrDigit(c)) //Verifica letras e números
+            if (Character.isLetter(c)) //Verifica variaveis
             {
-                numeroOuVariavel.append(c);
+                strVar.append(c);
             } else
             {
-                if (numeroOuVariavel.length() > 0)
+                if (strVar.length() > 0)
                 {
-                    posfixa.append(numeroOuVariavel).append(' ');
-                    numeroOuVariavel.setLength(0); // Limpa o buffer
+                    posfixa.append(strVar).append(' ');
+                    strVar.setLength(0); // Limpa o buffer
                 }
 
                 if (c == '(')
@@ -74,10 +76,10 @@ public class ConversorExpressao {
             }
         }
 
-        // Adiciona qualquer número ou variável restante à expressão posfixa
-        if (numeroOuVariavel.length() > 0)
+        // Adiciona qualquer variável restante à expressão posfixa
+        if (strVar.length() > 0)
         {
-            posfixa.append(numeroOuVariavel).append(' ');
+            posfixa.append(strVar).append(' ');
         }
 
         // Desempilha todos os operadores restantes

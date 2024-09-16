@@ -20,6 +20,7 @@ public class Main {
         {
             System.out.print("> ");
             String expressao = s.nextLine().trim().toUpperCase();
+
             verificaEntrada.isValid(expressao);
         }
     }
