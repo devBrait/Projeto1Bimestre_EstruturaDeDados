@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        // Para sempre exibir ponto e não virgula
+        // Para sempre exibir ponto e não vírgula
         Locale.setDefault(Locale.US);
         System.out.println("Seja bem-vindo(a) a calculadora!!!");
 

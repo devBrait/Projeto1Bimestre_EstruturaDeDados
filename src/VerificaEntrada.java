@@ -78,20 +78,28 @@ public class VerificaEntrada {
         char[] variaveisNaoDefinidas = new char[100];
         int countVariaveisNaoDefinidas = 0;
 
+        // Caso algum operador informado seja inválido
         if (expressao.matches(".*%.*"))
         {
            System.out.println("Erro: operador inválido.");
            return;
         }
 
-        // Permite números, operadores e variáveis simples de a a z
+        // Caso a expressão comece ou termine com algum operador
+        if (expressao.matches("^[+\\-*/].*|.*[+\\-*/]$"))
+        {
+            System.out.println("Erro: expressão inválida.");
+            return;
+        }
+
+        // Caso a expressao seja algo como 2+2
         if (!expressao.matches("[0-9+\\-*/()a-zA-Z\\s]*") || expressao.matches(".*[a-zA-Z]{2,}.*"))
         {
             System.out.println("Erro: expressão inválida.");
             return;
         }
 
-        // Verifica se há variáveis seguidas por números, o que é inválido
+        // Caso exista variaveis seguidas de números, Ex: x2+x
         if (expressao.matches(".*\\d+[\\+\\-*/]\\d+.*"))
         {
             System.out.println("Erro: expressão inválida.");
