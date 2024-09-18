@@ -12,6 +12,7 @@ public class VerificaEntrada {
     ConversorExpressao conversorExpressao = new ConversorExpressao();
     VerificaExpressao verificaExpressao = new VerificaExpressao(1024);
     Fila fila = new Fila();
+    Menu menu = new Menu();
 
     private boolean gravando = false;
     private DecimalFormat decimalFormat = new DecimalFormat("#.##");
@@ -58,7 +59,15 @@ public class VerificaEntrada {
             fila.apagar();
         } else if (gravando)
         {
-            fila.gravarComando(expressao);
+            if (!fila.isFull())
+            {
+                fila.gravarComando(expressao);
+            } else
+            {
+                System.out.println("Erro: Limite de gravação atingido. Caso queira gravar novos comandos apague a fila!");
+                gravando = false;
+            }
+
         } else if (expressao.matches(".*[+\\-*/^%].*"))
         {
             processarExpressaoMatematica(expressao);
@@ -201,6 +210,9 @@ public class VerificaEntrada {
                 break;
             case "RESET":
                 gerenciaVariavel.reset();
+                break;
+            case "HELP":
+                menu.exibeMenu();
                 break;
             default:
                 System.out.println("Erro: comando inválido.");

@@ -75,4 +75,9 @@ public class Fila {
             System.out.println("Gravação apagada.");
         }
     }
+
+    public boolean isFull()
+    {
+        return contador >= comandos.length;
+    }
 }
