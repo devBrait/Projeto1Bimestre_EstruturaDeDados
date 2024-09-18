@@ -6,8 +6,11 @@ Nome: Vinícius Brait Lorimier RA: 10420046
 
 // Realiza a conversão da expressão para posFixa
 public class ConversorExpressao {
+
+    // Instância da classe pilha
     Pilha pilha = new Pilha();
 
+    // Metodo que determina a prioridade dos operadores
     private int prioridade(char operador)
     {
         switch (operador)
@@ -26,9 +29,10 @@ public class ConversorExpressao {
     }
 
     public String convertorPosFixa(String expressao) {
-        StringBuilder posfixa = new StringBuilder();
-        StringBuilder strVar = new StringBuilder();
+        StringBuilder posfixa = new StringBuilder(); // Armazena a expressão em notação pós-fixa
+        StringBuilder strVar = new StringBuilder(); // Armazena variáveis temporariamente
 
+        // Percorre cada caractere da expressao
         for (char c : expressao.toCharArray())
         {
             if (Character.isLetter(c)) //Verifica variaveis
@@ -42,6 +46,7 @@ public class ConversorExpressao {
                     strVar.setLength(0); // Limpa o buffer
                 }
 
+                // Caso encontra um parêntese de abertura, empilha
                 if (c == '(')
                 {
                     pilha.push(c);
@@ -68,7 +73,7 @@ public class ConversorExpressao {
                     {
                         posfixa.append(pilha.pop()).append(' ');
                     }
-                    pilha.push(c);
+                    pilha.push(c); // Empilha o operador atual
                 } else if (!Character.isWhitespace(c))
                 {
                     throw new RuntimeException("Erro: Operador inválido.");
@@ -92,7 +97,7 @@ public class ConversorExpressao {
             }
             posfixa.append(operador).append(' ');
         }
-
+        // Retorna a notação posfixa
         return posfixa.toString();
     }
 }

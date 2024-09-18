@@ -5,15 +5,17 @@ Nome: Vinícius Brait Lorimier RA: 10420046
  */
 
 import java.text.DecimalFormat;
-
+// Classe para verificar expressao informada pelo usuário no input
 public class VerificaEntrada {
 
+    // Instância das classes
     GerenciaVariavel gerenciaVariavel = new GerenciaVariavel();
     ConversorExpressao conversorExpressao = new ConversorExpressao();
     VerificaExpressao verificaExpressao = new VerificaExpressao(1024);
     Fila fila = new Fila();
     Menu menu = new Menu();
 
+    // Declaração de variáveis
     private boolean gravando = false;
     private DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
@@ -68,13 +70,13 @@ public class VerificaEntrada {
                 gravando = false;
             }
 
-        } else if (expressao.matches(".*[+\\-*/^%].*"))
+        } else if (expressao.matches(".*[+\\-*/^%].*")) // Caso seja uma expressao matématica
         {
             processarExpressaoMatematica(expressao);
-        } else if (expressao.matches("[A-Z]\\s*=\\s*\\d+(\\.\\d+)?"))
+        } else if (expressao.matches("[A-Z]\\s*=\\s*\\d+(\\.\\d+)?")) // Caso seja uma atribuição de variável
         {
             definirVariavel(expressao);
-        } else if (expressao.matches("[A-Z]"))
+        } else if (expressao.matches("[A-Z]")) // Caso queira saber o valor da variável
         {
             obterValorVariavel(expressao);
         } else {
@@ -160,6 +162,7 @@ public class VerificaEntrada {
         {
             try
             {
+                // Chama as rotinas de conversão da expressao e de cálculo
                 String expressaoPosFixa = conversorExpressao.convertorPosFixa(expressao);
                 var resultado_final = verificaExpressao.avaliar(expressaoPosFixa, gerenciaVariavel);
                 System.out.println(decimalFormat.format(resultado_final));
@@ -171,7 +174,7 @@ public class VerificaEntrada {
         }
     }
 
-
+    // Define o valor da variável
     private void definirVariavel(String expressao)
     {
         String[] partes = expressao.split("=");
@@ -183,6 +186,7 @@ public class VerificaEntrada {
         System.out.println(var + " = " + decimalFormat.format(valor));
     }
 
+    // Obtem o valor da variável solicitada
     private void obterValorVariavel(String expressao)
     {
         char var = expressao.charAt(0);
@@ -197,6 +201,7 @@ public class VerificaEntrada {
         }
     }
 
+    // Verificação de outros possíveis comandos
     private void verifica_comandos(String comando)
     {
         switch (comando)

@@ -26,6 +26,7 @@ public class Main {
         Scanner s = new Scanner(System.in);
         VerificaEntrada verificaEntrada = new VerificaEntrada();
 
+        // Exibe o menu inicial com as opções disponíveis da calculadora
         System.out.println("Seja bem-vindo(a) à calculadora!!!\n");
         Menu menu = new Menu();
         menu.exibeMenu();

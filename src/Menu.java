@@ -1,3 +1,9 @@
+/*
+Nome: Eduardo Henrique de Souza Cruz RA: 10358690
+Nome: Guilherme Teodoro de Oliveira RA: 10425362
+Nome: Vinícius Brait Lorimier RA: 10420046
+*/
+// Classe para exibição do menu de ajuda
 public class Menu {
      public void exibeMenu(){
             System.out.println("Opções disponíveis:");
