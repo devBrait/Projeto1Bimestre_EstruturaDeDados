@@ -75,7 +75,7 @@ public class Fila {
     public void apagar() {
         if (contador == 0)
         {
-            System.out.println("Nenhuma gravação para ser apagada");
+            System.out.println("Nenhuma gravação para ser apagada.");
         } else
         {
             comandos = new String[10];

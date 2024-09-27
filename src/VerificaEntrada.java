@@ -70,13 +70,14 @@ public class VerificaEntrada {
                 gravando = false;
             }
 
-        } else if (expressao.matches(".*[+\\-*/^%].*")) // Caso seja uma expressao matématica
-        {
-            processarExpressaoMatematica(expressao);
-        } else if (expressao.matches("[A-Z]\\s*=\\s*\\d+(\\.\\d+)?")) // Caso seja uma atribuição de variável
+        }else if (expressao.matches("[A-Z]\\s*=\\s*[-]?\\d+(\\.\\d+)?"))// Caso seja uma atribuição de variável
         {
             definirVariavel(expressao);
-        } else if (expressao.matches("[A-Z]")) // Caso queira saber o valor da variável
+        }else if (expressao.matches(".*[+\\-*/^%].*")) // Caso seja uma expressao matématica
+        {
+            processarExpressaoMatematica(expressao);
+        }
+        else if (expressao.matches("[A-Z]")) // Caso queira saber o valor da variável
         {
             obterValorVariavel(expressao);
         } else {
